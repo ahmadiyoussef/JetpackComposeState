@@ -26,16 +26,24 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            HelloContent()
+            HelloScreen()
         }
     }
 }
 
 
+@Composable
+fun HelloScreen(){
+    var name: String by rememberSaveable { mutableStateOf("") }
+
+    HelloContent(name = name, onNameChange = { name = it})
+
+}
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HelloContent(){
-    var name: String by rememberSaveable { mutableStateOf("") }
+fun HelloContent(name: String, onNameChange: (String)-> Unit){
 
     Column(modifier = Modifier.padding(16.dp)) {
 
@@ -47,7 +55,7 @@ fun HelloContent(){
 
         OutlinedTextField(
             value = name,
-            onValueChange = {name = it},
+            onValueChange = onNameChange,
             label = {Text("name")}
         )
 
