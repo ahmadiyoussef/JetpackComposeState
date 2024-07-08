@@ -13,6 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -20,6 +21,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.jetpackcomposestate.ui.theme.JetpackComposeStateTheme
 
 class MainActivity : ComponentActivity() {
@@ -32,11 +37,34 @@ class MainActivity : ComponentActivity() {
 }
 
 
-@Composable
-fun HelloScreen(){
-    var name: String by rememberSaveable { mutableStateOf("") }
 
-    HelloContent(name = name, onNameChange = { name = it})
+class HelloViewModel: ViewModel(){
+
+
+    private val _name = MutableLiveData<String>("")
+    val name: LiveData<String> = _name
+
+    fun onNameChange(newName: String){
+          _name.value = newName
+    }
+
+}
+
+
+ class Car{
+
+}
+
+
+class Ford : Car(){
+
+}
+
+@Composable
+fun HelloScreen(helloViewModel: HelloViewModel = viewModel()){
+    val name by helloViewModel.name.observeAsState("")
+
+    HelloContent(name = name, onNameChange = { helloViewModel.onNameChange(it)})
 
 }
 
