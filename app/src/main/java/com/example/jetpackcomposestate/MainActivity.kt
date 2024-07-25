@@ -40,6 +40,9 @@ class MainActivity : ComponentActivity() {
 
 class HelloViewModel: ViewModel(){
 
+    // fdfd
+
+
 
     private val _name = MutableLiveData<String>("")
     val name: LiveData<String> = _name
